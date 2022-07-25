@@ -1,12 +1,11 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import UserRow from './UserRow';
+import DoctorRow from './DoctorRow';
 
-const Users = () => {
-    //let data = Array.from(data)
-
-    const {data: users, isLoading, refetch} = useQuery('users', () =>
-        fetch('http://localhost:5000/users',{
+const ManageDoctors = () => {
+    // const [doctors,setDoctors] = useState([]);
+    const {data: doctors, isLoading, refetch} = useQuery('doctors', () =>
+        fetch('http://localhost:5000/doctor',{
             method:'GET',
             headers:{
                 authorization:`Bearer ${localStorage.getItem('accessToken')}`
@@ -19,26 +18,25 @@ const Users = () => {
     }
     return (
         <div>
-            <h2 className="text-2xl">All Users:{users.length}</h2>
-            <div className="overflow-x-auto">
+            <h2>Manage the Doctor:{doctors.length}</h2>
             <table className="table w-full">
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Avatar</th>
                         <th>Name</th>
-                        <th>Job</th>
-                        <th>Favorite Color</th>
+                        <th>Speciality</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
-                        users.map(user =><UserRow key={user._id} user={user} refetch={refetch}></UserRow>)
+                        doctors.map((doctor, index) =><DoctorRow key={doctor._id} index={index} doctor={doctor} refetch={refetch}></DoctorRow>)
                     }
                 </tbody>
             </table>
-            </div>
         </div>
     );
 };
 
-export default Users;
+export default ManageDoctors;
